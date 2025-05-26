@@ -39,7 +39,7 @@ class CalendarEventData<T extends Object?> {
   final String? reminder;
 
   /// Defines if the event should repeat.
-  final bool repeat;
+  final bool isRepeating;
 
   /// Defines the active repeater type (e.g., daily, weekly, monthly).
   final int activeRepeater;
@@ -77,7 +77,7 @@ class CalendarEventData<T extends Object?> {
     this.ubication,
     required this.category,
     this.reminder,
-    this.repeat = false,
+    this.isRepeating = false,
     this.activeRepeater = 0,
     this.activeWeekDays,
     this.event,
@@ -159,7 +159,7 @@ class CalendarEventData<T extends Object?> {
         "ubication": ubication,
         "category": category,
         "reminder": reminder,
-        "repeat": repeat,
+        "isRepeating": isRepeating,
         "activeRepeater": activeRepeater,
         "activeWeekDays": activeWeekDays,
         "endDate": endDate,
@@ -176,7 +176,7 @@ class CalendarEventData<T extends Object?> {
     String? ubication,
     Category? category,
     String? reminder,
-    bool? repeat,
+    bool? isRepeating,
     int? activeRepeater,
     List<int>? activeWeekDays,
     T? event,
@@ -200,7 +200,7 @@ class CalendarEventData<T extends Object?> {
       ubication: ubication ?? this.ubication,
       category: category ?? this.category,
       reminder: reminder ?? this.reminder,
-      repeat: repeat ?? this.repeat,
+      isRepeating: isRepeating ?? this.isRepeating,
       activeRepeater: activeRepeater ?? this.activeRepeater,
       activeWeekDays: activeWeekDays ?? this.activeWeekDays,
       descriptionStyle: descriptionStyle ?? this.descriptionStyle,
@@ -237,7 +237,7 @@ class CalendarEventData<T extends Object?> {
         ubication == other.ubication &&
         category == other.category &&
         reminder == other.reminder &&
-        repeat == other.repeat &&
+        isRepeating == other.isRepeating &&
         activeRepeater == other.activeRepeater &&
         _listEquals(activeWeekDays, other.activeWeekDays);
   }
@@ -260,7 +260,7 @@ class CalendarEventData<T extends Object?> {
       ubication.hashCode ^
       category.hashCode ^
       reminder.hashCode ^
-      repeat.hashCode ^
+      isRepeating.hashCode ^
       activeRepeater.hashCode ^
       activeWeekDays.hashCode ^
       descriptionStyle.hashCode ^
