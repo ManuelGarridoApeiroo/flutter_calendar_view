@@ -47,6 +47,8 @@ class CalendarEventData<T extends Object?> {
   /// Defines the active weekdays for weekly repetition.
   final List<int>? activeWeekDays;
 
+  final int repeatEvery;
+
   /// Defines color of event.
   /// This color will be used in default widgets provided by plugin.
   final Color color;
@@ -80,6 +82,7 @@ class CalendarEventData<T extends Object?> {
     this.isRepeating = false,
     this.activeRepeater = 0,
     this.activeWeekDays,
+    this.repeatEvery = 0,
     this.event,
     this.color = Colors.blue,
     this.startTime,
@@ -162,6 +165,7 @@ class CalendarEventData<T extends Object?> {
         "isRepeating": isRepeating,
         "activeRepeater": activeRepeater,
         "activeWeekDays": activeWeekDays,
+        "repeatEvery": repeatEvery,
         "endDate": endDate,
         "recurrenceSettings": recurrenceSettings,
       };
@@ -179,6 +183,7 @@ class CalendarEventData<T extends Object?> {
     bool? isRepeating,
     int? activeRepeater,
     List<int>? activeWeekDays,
+    int? repeatEvery,
     T? event,
     Color? color,
     DateTime? startTime,
@@ -203,6 +208,7 @@ class CalendarEventData<T extends Object?> {
       isRepeating: isRepeating ?? this.isRepeating,
       activeRepeater: activeRepeater ?? this.activeRepeater,
       activeWeekDays: activeWeekDays ?? this.activeWeekDays,
+      repeatEvery: repeatEvery ?? this.repeatEvery,
       descriptionStyle: descriptionStyle ?? this.descriptionStyle,
       endDate: endDate ?? this.endDate,
       event: event ?? this.event,
@@ -239,6 +245,7 @@ class CalendarEventData<T extends Object?> {
         reminder == other.reminder &&
         isRepeating == other.isRepeating &&
         activeRepeater == other.activeRepeater &&
+        repeatEvery == other.repeatEvery &&
         _listEquals(activeWeekDays, other.activeWeekDays);
   }
 
@@ -263,6 +270,7 @@ class CalendarEventData<T extends Object?> {
       isRepeating.hashCode ^
       activeRepeater.hashCode ^
       activeWeekDays.hashCode ^
+      repeatEvery.hashCode ^
       descriptionStyle.hashCode ^
       titleStyle.hashCode ^
       color.hashCode ^
