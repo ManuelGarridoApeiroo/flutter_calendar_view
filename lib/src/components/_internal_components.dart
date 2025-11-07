@@ -396,32 +396,42 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
         startHour: startHour);
 
     return List.generate(events.length, (index) {
+      final eventData = events[index];
+
+      final double eventHeight = height - eventData.bottom - eventData.top;
+
+      const double minMinutes = 26;
+      final double minHeight = minMinutes * heightPerMinute;
+
+      final double adjustedHeight =
+          eventHeight < minHeight ? minHeight : eventHeight;
+
       return Positioned(
-        top: events[index].top,
-        bottom: events[index].bottom,
-        left: events[index].left,
-        right: events[index].right,
+        top: eventData.top,
+        left: eventData.left,
+        right: eventData.right,
+        height: adjustedHeight,
         child: GestureDetector(
-          onLongPress: () => onTileLongTap?.call(events[index].events, date),
-          onTap: () => onTileTap?.call(events[index].events, date),
-          onDoubleTap: () => onTileDoubleTap?.call(events[index].events, date),
+          onLongPress: () => onTileLongTap?.call(eventData.events, date),
+          onTap: () => onTileTap?.call(eventData.events, date),
+          onDoubleTap: () => onTileDoubleTap?.call(eventData.events, date),
           child: Builder(builder: (context) {
             if (scrollNotifier.shouldScroll &&
-                events[index]
-                    .events
+                eventData.events
                     .any((element) => element == scrollNotifier.event)) {
               _scrollToEvent(context);
             }
             return eventTileBuilder(
               date,
-              events[index].events,
+              eventData.events,
               Rect.fromLTWH(
-                  events[index].left,
-                  events[index].top,
-                  width - events[index].right - events[index].left,
-                  height - events[index].bottom - events[index].top),
-              events[index].startDuration,
-              events[index].endDuration,
+                eventData.left,
+                eventData.top,
+                width - eventData.right - eventData.left,
+                adjustedHeight,
+              ),
+              eventData.startDuration,
+              eventData.endDuration,
             );
           }),
         ),
