@@ -398,43 +398,37 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
     return List.generate(events.length, (index) {
       final eventData = events[index];
 
-      final double eventHeight = height - eventData.bottom - eventData.top;
+      final eventHour = eventData.startDuration.hour;
+          events.where((e) => e.startDuration.hour == eventHour).toList();
 
-      const double minMinutes = 26;
-      final double minHeight = minMinutes * heightPerMinute;
+      return Row(
+        children: [
+          Flexible(
+            fit: FlexFit.loose,
+            child: GestureDetector(
+              onLongPress: () => onTileLongTap?.call(eventData.events, date),
+              onTap: () => onTileTap?.call(eventData.events, date),
+              onDoubleTap: () => onTileDoubleTap?.call(eventData.events, date),
+              child: Builder(
+                builder: (context) {
+                  if (scrollNotifier.shouldScroll &&
+                      eventData.events
+                          .any((element) => element == scrollNotifier.event)) {
+                    _scrollToEvent(context);
+                  }
 
-      final double adjustedHeight =
-          eventHeight < minHeight ? minHeight : eventHeight;
-
-      return Positioned(
-        top: eventData.top,
-        left: eventData.left,
-        right: eventData.right,
-        height: adjustedHeight,
-        child: GestureDetector(
-          onLongPress: () => onTileLongTap?.call(eventData.events, date),
-          onTap: () => onTileTap?.call(eventData.events, date),
-          onDoubleTap: () => onTileDoubleTap?.call(eventData.events, date),
-          child: Builder(builder: (context) {
-            if (scrollNotifier.shouldScroll &&
-                eventData.events
-                    .any((element) => element == scrollNotifier.event)) {
-              _scrollToEvent(context);
-            }
-            return eventTileBuilder(
-              date,
-              eventData.events,
-              Rect.fromLTWH(
-                eventData.left,
-                eventData.top,
-                width - eventData.right - eventData.left,
-                adjustedHeight,
+                  return eventTileBuilder(
+                    date,
+                    eventData.events,
+                    Rect.fromLTWH(0, 0, width, 0),
+                    eventData.startDuration,
+                    eventData.endDuration,
+                  );
+                },
               ),
-              eventData.startDuration,
-              eventData.endDuration,
-            );
-          }),
-        ),
+            ),
+          ),
+        ],
       );
     });
   }
@@ -463,10 +457,12 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Use SizedBox If possible.
     return Container(
-      height: height,
+      height: 125,
       width: width,
-      child: Stack(
-        children: _generateEvents(context),
+      child: Container(
+        child: Column(
+          children: _generateEvents(context),
+        ),
       ),
     );
   }
